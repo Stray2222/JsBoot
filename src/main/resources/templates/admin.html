@@ -59,12 +59,6 @@
     <input type="text" th:field="*{password}" id="password"/>
     <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
     /<br>
-    <label class="row  justify-content-center" for="roleNew">Role</label>
-    <select class="form-control" size="2" id="roleNew" name="role">-->
-        <option>ADMIN</option>
-        <option>USER</option>
-    </select>
-    <br>
     <input type="submit" value="Save"/>
 </form>
 <h4><a href="/">home</a></h4>

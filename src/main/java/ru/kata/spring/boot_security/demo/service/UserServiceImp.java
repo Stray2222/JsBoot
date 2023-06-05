@@ -7,8 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.repo.RoleRepository;
-import ru.kata.spring.boot_security.demo.repo.UserRepository;
+import ru.kata.spring.boot_security.demo.repository.RoleRepository;
+import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +38,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public User getUserById(int id) {
+    public User getUserById(long id) {
         return userRepository.findById(id);
     }
 
@@ -61,9 +61,9 @@ public class UserServiceImp implements UserService {
             return false;
         }
         if (role.equals("ADMIN")) {
-            user.setRoles(Set.of(new Role(1, "ROLE_ADMIN"), new Role(2, "ROLE_USER")));
+            user.setRoles(Set.of(new Role(1L, "ROLE_ADMIN"), new Role(2L, "ROLE_USER")));
         } else {
-            user.setRoles(Collections.singleton(new Role(2, "ROLE_USER")));
+            user.setRoles(Collections.singleton(new Role(2L, "ROLE_USER")));
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -71,7 +71,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void removeUser(int id) {
+    public void removeUser(long id) {
         userRepository.deleteById(id);
     }
 
@@ -82,9 +82,9 @@ public class UserServiceImp implements UserService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         if (role.equals("ADMIN")) {
-            user.setRoles(Set.of(new Role(1, "ROLE_ADMIN"), new Role(2, "ROLE_USER")));
+            user.setRoles(Set.of(new Role(1L, "ROLE_ADMIN"), new Role(2L, "ROLE_USER")));
         } else if (role.equals("USER")) {
-            user.setRoles(Collections.singleton(new Role(2, "ROLE_USER")));
+            user.setRoles(Collections.singleton(new Role(2L, "ROLE_USER")));
         } else {
             user.setRoles(userBas.getRoles());
         }

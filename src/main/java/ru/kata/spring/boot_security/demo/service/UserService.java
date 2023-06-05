@@ -13,7 +13,8 @@ public interface UserService extends UserDetailsService {
 
     List<Role> getAllRoles();
 
-    User getUserById(int id);
+    User getUserById(long id);
+
 
     boolean saveUser(User user);
 
@@ -21,9 +22,8 @@ public interface UserService extends UserDetailsService {
 
     public void saveRole(Role role);
 
-    void removeUser(int id);
+    void removeUser(long id);
+
 
     void updateUser(User user, String role);
-
-    User loadUserByUserEmail(String email);
 }
