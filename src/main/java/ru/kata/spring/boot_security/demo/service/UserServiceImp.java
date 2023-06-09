@@ -17,14 +17,14 @@ import java.util.Set;
 @Service
 public class UserServiceImp implements UserService {
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     @Lazy
-    public UserServiceImp(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImp(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -33,8 +33,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public List<Role> getAllRoles() {
-        return roleRepository.findAll();
+    public List<User> getAllRoles() {
+        return userRepository.findAll();
     }
 
     @Override
@@ -44,11 +44,10 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean saveUser(User user) {
-        User userFromDB = userRepository.findByEmail(user.getUsername());
+        User  userFromDB = userRepository.findByEmail(user.getUsername());
         if (userFromDB != null) {
             return false;
         }
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
@@ -78,12 +77,12 @@ public class UserServiceImp implements UserService {
     @Override
     public void updateUser(User user, String role) {
         User userBas = getUserById(user.getId());
-        if (!userBas.getPassword().equals(user.getPassword())) {
+        if(!userBas.getPassword().equals(user.getPassword())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         if (role.equals("ADMIN")) {
             user.setRoles(Set.of(new Role(1L, "ROLE_ADMIN"), new Role(2L, "ROLE_USER")));
-        } else if (role.equals("USER")) {
+        } else if (role.equals("USER")){
             user.setRoles(Collections.singleton(new Role(2L, "ROLE_USER")));
         } else {
             user.setRoles(userBas.getRoles());
@@ -98,7 +97,7 @@ public class UserServiceImp implements UserService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return user;
+        return user.getUserDetails();
     }
 
     public User loadUserByUserEmail(String email) throws UsernameNotFoundException {
@@ -109,7 +108,6 @@ public class UserServiceImp implements UserService {
         }
         return user;
     }
-
     public void saveRole(Role role) {
         roleRepository.save(role);
     }

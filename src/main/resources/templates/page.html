@@ -1,18 +1,92 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
 </head>
+
 <body>
-<div>
-    <h2>News <br> only for logget in users.</h2>
-    <form>
-        HELLO
-        <th th:text="${user.getUsername()}"></th>
-    </form>
-    <h4><a href="/">home</a></h4>
-    <h4><a th:href="@{/logout}">exit</a></h4>
+<!--верхняя строка-->
+<nav class="navbar bg-dark">
+    <h5 class="text-light"><b><span sec:authentication="name"></span>
+        <span th:text="${userAuthorities.getEmail()}"></span></b>
+        with roles: <span th:text="${userAuthorities.getRoleString()}"></span></b>
+    </h5>
+
+    <a class="text-secondary" th:href="@{/logout}">Logout</a>
+</nav>
+<!--верхняя строка конец-->
+<div class="container-xxl">
+    <div class="row">
+        <!--левая панель-->
+        <div class="col-2">
+            <div class="list-group" id="list-tab-left" role="tablist">
+                <a class="list-group-item list-group-item-action show active" id="list-user-list" data-toggle="list"
+                   href="#list-user" role="tab" aria-controls="list-user">User</a>
+            </div>
+        </div>
+        <!--левая панель конец-->
+
+        <div class="col">
+            <div class="tab-content" id="nav-tabLeftContent">
+
+                <!--данные страницы пользователя-->
+                <div class="tab-pane fade show active" id="list-user" role="tabpanel"
+                     aria-labelledby="list-user-list-2">
+                    <h1>User information-page</h1>
+                    <!--содержимое средней панели-->
+                    <!--таблица пользователей-->
+                    <div class="tab-pane fade show active" id="list-tableUser-2" role="tabpanel"
+                         aria-labelledby="list-tableUser-list-2">
+                        <div class="card-header">
+                            <h4>About user</h4>
+                        </div>
+                        <div>
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Age</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                </tr>
+
+                                <tr>
+                                    <th th:text="${userAuthorities.getId()}"></th>
+                                    <th th:text="${userAuthorities.getFirstName()}"></th>
+                                    <th th:text="${userAuthorities.getLastName()}"></th>
+                                    <th th:text="${userAuthorities.getAge()}"></th>
+                                    <th th:text="${userAuthorities.getEmail()}"></th>
+                                    <th th:utext="${userAuthorities.getRoleString()}"></th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!--данные страницы пользователя конец-->
+            </div>
+        </div>
+    </div>
 </div>
+
+
+<!-- Вариант 2: Отдельные JS для Popper и Bootstrap -->
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 </html>

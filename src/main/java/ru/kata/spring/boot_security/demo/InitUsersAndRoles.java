@@ -30,12 +30,12 @@ public class InitUsersAndRoles {
             Set<Role> roles = new HashSet<>();
 
             roles.add(user);
-            User newUser = new User(1L, "USER", 20, "USER@MAIL.RU", "USER", "USER", roles);
+            User newUser = new User(1L, "USER", "Katya", 20, "USER@MAIL.RU", "USER", "USER", roles);
 
             roles = new HashSet<>();
             roles.add(user);
             roles.add(admin);
-            User newAdmin = new User(2L, "ADMIN", 20, "ADMIN@MAIL.RU", "ADMIN", "ADMIN", roles);
+            User newAdmin = new User(2L, "ADMIN", "Misha", 20, "ADMIN@MAIL.RU", "ADMIN", "ADMIN", roles);
 
 
             userService.saveUser(newUser);
