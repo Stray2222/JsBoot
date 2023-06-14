@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.kata.spring.boot_security.demo.exception.UserAlreadyExistsException;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
@@ -33,8 +34,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public List<User> getAllRoles() {
-        return userRepository.findAll();
+    public List<Role> getAllRoles() {
+        return roleRepository.findAll();
     }
 
     @Override
@@ -42,11 +43,12 @@ public class UserServiceImp implements UserService {
         return userRepository.findById(id);
     }
 
+
     @Override
     public boolean saveUser(User user) {
-        User  userFromDB = userRepository.findByEmail(user.getUsername());
+        User userFromDB = userRepository.findByEmail(user.getUsername());
         if (userFromDB != null) {
-            return false;
+            throw new UserAlreadyExistsException("User Already exist");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -57,7 +59,7 @@ public class UserServiceImp implements UserService {
     public boolean saveUser(User user, String role) {
         User userFromDB = userRepository.findByEmail(user.getUsername());
         if (userFromDB != null) {
-            return false;
+            throw new UserAlreadyExistsException("User Already exist");
         }
         if (role.equals("ADMIN")) {
             user.setRoles(Set.of(new Role(1L, "ROLE_ADMIN"), new Role(2L, "ROLE_USER")));
@@ -79,6 +81,9 @@ public class UserServiceImp implements UserService {
         User userBas = getUserById(user.getId());
         if(!userBas.getPassword().equals(user.getPassword())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        if(!userBas.getEmail().equals(user.getEmail())){
+            throw new UserAlreadyExistsException("User Already exist");
         }
         if (role.equals("ADMIN")) {
             user.setRoles(Set.of(new Role(1L, "ROLE_ADMIN"), new Role(2L, "ROLE_USER")));

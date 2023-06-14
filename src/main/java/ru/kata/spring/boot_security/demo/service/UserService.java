@@ -9,7 +9,7 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
     List<User> getAllUsers();
 
-    List<User> getAllRoles();
+    List<Role> getAllRoles();
 
     void saveRole(Role role);
 

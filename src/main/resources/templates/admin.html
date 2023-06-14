@@ -112,13 +112,13 @@
                                                                                for="firstName">First Name</label>
                                                                         <input class="form-control" name="firstName"
                                                                                type="text" th:value="*{user.firstName}"
-                                                                               id="firstName">
+                                                                               id="firstName" required>
                                                                         <br>
                                                                         <label class="row  justify-content-center"
                                                                                for="lastName">Last Name</label>
                                                                         <input class="form-control" name="lastName"
                                                                                type="text" th:value="*{user.lastName}"
-                                                                               id="lastName">
+                                                                               id="lastName" required>
                                                                         <br>
                                                                         <label class="row  justify-content-center"
                                                                                for="age">Age</label>
@@ -130,15 +130,15 @@
                                                                         <label class="row  justify-content-center"
                                                                                for="email">Email</label>
                                                                         <input class="form-control" name="email"
-                                                                               type="email" th:value="*{user.email}"
-                                                                               id="email">
+                                                                               type="email" th:value="*{user.email}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                                                               id="email" required>
                                                                         <br>
                                                                         <label class="row  justify-content-center"
                                                                                for="password">Password</label>
                                                                         <input class="form-control" name="password"
                                                                                type="password"
                                                                                th:value="*{user.password}"
-                                                                               id="password">
+                                                                               id="password" required >
                                                                         <br>
                                                                         <label class="row  justify-content-center"
                                                                                for="role">Role</label>
@@ -253,27 +253,30 @@
                                     <div class="col-3 align-self-center h5">
                                         <form th:method="POST" th:action="@{/admin/new}" th:object="${newUser}">
                                             <div class="form-group">
+
                                                 <label class="row  justify-content-center" for="FirstNameNew">First
                                                     Name</label>
                                                 <input class="form-control" type="text" th:field="*{firstName}"
-                                                       id="FirstNameNew">
+                                                       id="FirstNameNew" required>
+
                                                 <br>
                                                 <label class="row  justify-content-center" for="LastNameNew">Last
                                                     Name</label>
                                                 <input class="form-control" type="text" th:field="*{lastName}"
-                                                       id="LastNameNew">
+                                                       id="LastNameNew" required>
                                                 <br>
                                                 <label class="row  justify-content-center" for="AgeNew">Age</label>
-                                                <input class="form-control" type="text" th:field="*{age}" id="AgeNew">
+                                                <input class="form-control" type="number" step="1" min="1"
+                                                       max="150" th:field="*{age}" id="AgeNew">
                                                 <br>
                                                 <label class="row  justify-content-center" for="emailNew">Email</label>
-                                                <input class="form-control" type="text" th:field="*{email}"
-                                                       id="emailNew">
+                                                <input class="form-control" type="email" th:field="*{email}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                                       id="emailNew" required>
                                                 <br>
                                                 <label class="row  justify-content-center"
                                                        for="passwordNew">Password</label>
                                                 <input class="form-control" type="password" th:field="*{password}"
-                                                       id="passwordNew">
+                                                       id="passwordNew" required>
                                                 <br>
                                                 <label class="row  justify-content-center" for="roleNew">Role</label>
                                                 <select class="form-control" size="2" id="roleNew" name="role">
