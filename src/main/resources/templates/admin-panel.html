@@ -102,20 +102,20 @@
                                                     <p>
                                                         <label class="container-fluid" for="newUserFirstName"><strong>FirstName</strong>
                                                             <input class="form-control" type="text" name="firstName"
-                                                                   id="newUserFirstName"/>
+                                                                   id="newUserFirstName" required maxlength="10"/>
                                                         </label>
                                                     </p>
                                                     <p>
                                                         <label class="container-fluid" for="newUserLastName"><strong>LastName</strong>
                                                             <input class="form-control" type="text" name="lastName"
-                                                                   id="newUserLastName"/>
+                                                                   id="newUserLastName" required maxlength="10"/>
                                                         </label>
                                                     </p>
 
                                                     <p>
                                                         <label class="container-fluid" for="newUserAge"><strong>Age</strong>
                                                             <input class="form-control" type="number" name="age"
-                                                                   id="newUserAge"/>
+                                                                   id="newUserAge" required  min="1" value="1" maxlength="100", minlength="0"/>
                                                         </label>
                                                     </p>
 
@@ -123,13 +123,13 @@
                                                         <label class="container-fluid"
                                                                for="newUserEmail"><strong>Email</strong>
                                                             <input class="form-control" type="email" name="username"
-                                                                   id="newUserEmail"/>
+                                                                   id="newUserEmail" required/>
                                                         </label>
                                                     </p>
                                                     <p>
                                                         <label class="container-fluid" for="newUserPassword"><strong>Password</strong>
                                                             <input class="form-control" type="password" name="password"
-                                                                   id="newUserPassword"/>
+                                                                   id="newUserPassword" required maxlength="10"/>
                                                         </label>
                                                     </p>
                                                     <label class="container-fluid"
@@ -201,6 +201,7 @@
                             <p>
                                 <label for="firstNameEditUser"><strong>FirstName</strong>
                                     <input class="form-control" type="text" name="firstName" id="firstNameEditUser"/>
+
                                 </label>
                             </p>
                             <p>
