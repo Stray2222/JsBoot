@@ -1,93 +1,122 @@
 package ru.kata.spring.boot_security.demo.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.kata.spring.boot_security.demo.models.Role;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-@Data
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "users")
+@Getter
+@Setter
+@ToString
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "firstname")
+    @Column(name = "firstName")
     private String firstName;
-
-    @Column(name = "lastname")
-    private String lastName;
-
-    @Column(name = "age")
-    private int age;
-
-    @Column(name = "email")
-    private String email;
-
     @Column(name = "password")
     private String password;
 
-    @Transient
-    private String passwordConfirm;
+    @Column(name = "lastName")
+    private String lastName;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Role> roles;
+    @Column(name = "age")
+    private Integer age;
+
+    @Column(name = "email", unique = true, nullable = false)
+    private String username;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    @Fetch(FetchMode.JOIN)
+    @ToString.Exclude
+    private Set<Role> roles = new HashSet<>();
+
+    public User() {
+    }
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
+        return roles;
     }
 
     @Override
+    public String getUsername() {
+        return username;
+    }
+    @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
-
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
-
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true;
     }
 
+    public void setRole(Role role) {
+        roles.add(role);
+    }
 
     @Override
-    public String getUsername() {
-        return email;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
     }
 
-
-    public String getRoleString() {
-        return roles.stream().map(role -> role.getRole().replace("ROLE_", "")).collect(Collectors.joining(" "));
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
-    public UserDetails getUserDetails() {
-        return new org.springframework.security.core.userdetails.User(email, password, isEnabled(),
-                isAccountNonExpired(), isCredentialsNonExpired(), isAccountNonLocked(), roles);
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", password='" + password + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", username='" + username + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }
